@@ -17,6 +17,7 @@ card_number int,
  address char(30))
 ;
 
+select * from employee;
 
 insert into client_info values
 (1,'Dregan',12,'2950614','Jibou'),
@@ -47,6 +48,21 @@ insert into account values
 (1,'Spending',200,'01.01.2010',1,1),
 (2,'Saving',1000,'02.02.2000',1,2),
 (3,'Spending',2000,'04.04.2005',2,3);
+
+
+select * from account;
+create table admin
+(usernameadmin char(20),
+passwordadmin char(20));
+
+insert into admin values
+('admin','adminpass');
+
+create table user(usernameuser char(20),
+passworduser char(20));
+
+insert into user values
+('user','userpass');
 
 
 
