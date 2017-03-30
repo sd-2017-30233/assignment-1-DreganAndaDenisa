@@ -31,8 +31,8 @@ public class AccountGateway {
   }
 
     
-    public ArrayList<Account> AllAccounts(){
-        ArrayList<Account> returnStatement = new ArrayList<Account>();
+    public ArrayList<Object> AllAccounts(){
+        ArrayList<Object> returnStatement = new ArrayList<Object>();
 
 		try {
 
@@ -41,21 +41,15 @@ public class AccountGateway {
 			ResultSet rs = dbStatement.executeQuery();
 
 			while(rs.next()) {
-				Integer ida = rs.getInt("ida");
-				String typea = rs.getString("typea");
-                                Double amount=rs.getDouble("amount");
-                                String creat_date=rs.getString("creat_date");
-                                Integer ide = rs.getInt("ide");
-                                Integer idc = rs.getInt("idc");
-                                Account newAccount=new Account();
-                                newAccount.setAccountId(ida);
-                                newAccount.setAccountType(typea);
-                                newAccount.setAccountAmount(amount);
-                                newAccount.setAccountDate(creat_date);
-                                newAccount.setEmployeeId(ide);
-                                newAccount.setClientId(idc);
-                                
-				returnStatement.add(newAccount);			
+                             Object[] c=new Object[6];
+				c[0]=rs.getInt(1);
+                                c[1]=rs.getString(2);
+                                c[2]=rs.getDouble(3);
+                                c[3]=rs.getString(3);
+                                c[4]=rs.getInt(4);
+                                c[5]=rs.getInt(5);
+                            
+				returnStatement.add(c);			
 			}
 		}
 		catch(SQLException e) {
@@ -126,45 +120,50 @@ public void deleteAccount(Integer ida) {
 
 public void transfer(Integer ida1,Integer ida2,Double sum)
 {
+    double from=0,to=0;
+    System.out.println(from);
     try {
-
-                        String statementt = "select amount from account where ida = '" + ida1+ "';";
+                        String statementt = "select amount from account where ida = ?";
+                     
 			PreparedStatement dbStatement = conn.prepareStatement(statementt);
+                          
+                        dbStatement.setInt(1,ida1);
+                       
 			ResultSet rs = dbStatement.executeQuery();
 
 			while(rs.next()) {
-				Double amountt = rs.getDouble("amount");
-                                Account newAccount1=new Account();
-                                newAccount1.setAccountAmount(amountt-sum);
-                                System.out.println(amountt-sum);
-                                if (amountt>=sum){
-                                String statemennt = "UPDATE account SET amount=? where ida=?";
-			PreparedStatement dbStatemenntt = conn.prepareStatement(statemennt);
-			dbStatemenntt.setDouble(1,amountt-sum);
-			dbStatemenntt.setInt(2,ida1);
-			dbStatemenntt.executeUpdate();
-                                 JOptionPane.showMessageDialog(null, "Transfer reusit intre conturi!", null, JOptionPane.INFORMATION_MESSAGE);}
-                                else {JOptionPane.showMessageDialog(null, "Suma insuficienta!", null, JOptionPane.ERROR_MESSAGE);};
+                            
+                             from=rs.getDouble("amount");
+                             System.out.println(from);
+                               String statemennt1 = "UPDATE account SET amount=? where ida=?";
+			PreparedStatement dbStatemenntt1 = conn.prepareStatement(statemennt1);
+			dbStatemenntt1.setDouble(1,from-sum);
+			dbStatemenntt1.setInt(2,ida1);
+			dbStatemenntt1.executeUpdate();
+                      //  System.out.println(to+sum);
                         }
+                               
                         
-                        String statementt1 = "select amount from account where ida = '" + ida2+ "';";
+                        String statementt1 = "select amount from account where ida =? ";
 			PreparedStatement dbStatementt = conn.prepareStatement(statementt1);
-			ResultSet rs1 = dbStatementt.executeQuery();
+			dbStatementt.setInt(1,ida2);
+                        ResultSet rs1 = dbStatementt.executeQuery();
 
 			while(rs1.next()) {
-				Double amountt1 = rs1.getDouble("amount");
-                                Account newAccount2=new Account();
-                                newAccount2.setAccountAmount(amountt1+sum);
+                         to=rs1.getDouble("amount");   
+                                   
+                        String statemennt2 = "UPDATE account SET amount=? where ida=?";
+			PreparedStatement dbStatemenntt2 = conn.prepareStatement(statemennt2);
+			dbStatemenntt2.setDouble(1,to+sum);
+			dbStatemenntt2.setInt(2,ida2);
+			dbStatemenntt2.executeUpdate();
+                        }
                                 //System.out.println(amountt1+sum);
-                                 String statemennt1 = "UPDATE account SET amount=? where ida=?";
-			PreparedStatement dbStatemenntt1 = conn.prepareStatement(statemennt1);
-			dbStatemenntt1.setDouble(1,amountt1+sum);
-			dbStatemenntt1.setInt(2,ida2);
-			dbStatemenntt1.executeUpdate();
+                       
                         }
                         
     
-    }
+    
                         
         
        
@@ -177,27 +176,30 @@ public void transfer(Integer ida1,Integer ida2,Double sum)
 
 public void procesarefactura(Integer idaa,Double suma)
 {
+    double from=0;
     try {
 
-                        String statementt = "select amount from account where ida = '" + idaa+ "';";
+                        String statementt = "select amount from account where ida = ?";
 			PreparedStatement dbStatement = conn.prepareStatement(statementt);
+                        dbStatement.setInt(1,idaa);
 			ResultSet rs = dbStatement.executeQuery();
 
-			while(rs.next()) {
-				Double amountt = rs.getDouble("amount");
-                                Account newAccount1=new Account();
-                                newAccount1.setAccountAmount(amountt-suma);
-                                //System.out.println(newAccount1.getAccountAmount());
-                               if (amountt>=suma){
-                        String statement = "UPDATE account SET amount=? where ida=?";
-			PreparedStatement dbStatementt = conn.prepareStatement(statement);
-			dbStatementt.setDouble(1,amountt-suma);
-			dbStatementt.setInt(2,idaa);
-			dbStatementt.executeUpdate();
-                         JOptionPane.showMessageDialog(null, "Factura platita cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
-                               }
-                else {JOptionPane.showMessageDialog(null, "Suma insuficienta!", null, JOptionPane.ERROR_MESSAGE);};  
+                        while(rs.next()) {
+                         from=rs.getDouble("amount");   
                         }
+                        if(from>suma)
+                                //System.out.println(amountt1+sum);
+                        {  String statemennt1 = "UPDATE account SET amount=? where ida=?";
+			PreparedStatement dbStatemenntt1 = conn.prepareStatement(statemennt1);
+			dbStatemenntt1.setDouble(1,from-suma);
+			dbStatemenntt1.setInt(2,idaa);
+			dbStatemenntt1.executeUpdate();
+                        
+                        JOptionPane.showMessageDialog(null, "Factura platita cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
+                               }
+                else {JOptionPane.showMessageDialog(null, "Suma insuficienta!", null, JOptionPane.ERROR_MESSAGE);}; 
+                        
+			
                         
 }
     catch(SQLException e) {
@@ -210,23 +212,32 @@ public void procesarefactura(Integer idaa,Double suma)
 
 public void genreport(Integer ide,String data)
 {
+    Object[] msg={};
     
      try {
 
                         String statementt = "select account.ida, account.typea,account.amount from account where account.ide = '" + ide+ "'and creat_date = '" + data+ "';";
 			PreparedStatement dbStatement = conn.prepareStatement(statementt);
+                        dbStatement.setInt(1,ide);
+                        dbStatement.setString(2,data);
 			ResultSet rs = dbStatement.executeQuery();
    if(rs.next()==false) {JOptionPane.showMessageDialog(null, "Nu exista activitate!", null, JOptionPane.ERROR_MESSAGE);}
-     while(rs.next()) {
+    
         
-				Integer ida = rs.getInt("ida");
-                                String typea=rs.getString("typea");
-                                Double amount=rs.getDouble("amount");
-                                Account newAccount1=new Account();
-                                newAccount1.setAccountId(ida);
-                                newAccount1.setAccountType(typea);
-                                newAccount1.setAccountAmount(amount);
-                                Object[] msg = {"Id cont: ",newAccount1.getAccountId(),"Tip cont: ",newAccount1.getAccountType(),"Suma cont:", newAccount1.getAccountAmount()};
+         while(rs.next()) {
+                             Object[] c=new Object[6];
+				c[0]=rs.getInt(1);
+                                c[1]=rs.getString(2);
+                                c[2]=rs.getDouble(3);
+                                c[3]=rs.getString(4);
+                                c[4]=rs.getInt(5);
+                                c[5]=rs.getInt(6);
+                            System.out.println("Id cont: "+c[0]+"Tip cont: "+c[1]+"Suma cont:"+c[2]);
+                                 //msg = {"Id cont: ",c[0],"Tip cont: ",c[1],"Suma cont:", c[2]};
+			}
+         
+     
+                              //  Object[] msg = {"Id cont: ",c[0],"Tip cont: ",newAccount1.getAccountType(),"Suma cont:", newAccount1.getAccountAmount()};
 
     JOptionPane op = new JOptionPane(
     	msg,
@@ -239,7 +250,7 @@ public void genreport(Integer ide,String data)
     dialog.setVisible(true);
                                
      }
-     }
+     
      catch(SQLException e) {
 			//System.out.println("SQLException: " + e.getMessage());
 			//System.out.println("SQLState: " + e.getSQLState());

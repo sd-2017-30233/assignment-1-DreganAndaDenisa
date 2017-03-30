@@ -17,29 +17,24 @@ public class Operation {
     
     private Connection conn;
     
-    
-       public void addClient(Client parsedClient) {
-		Integer idc = parsedClient.getClientId();
-		String namec = parsedClient.getClientName();
-                Integer card_number=parsedClient.getClientCardNr();
-                String cnp = parsedClient.getClientCNP();
-		String address = parsedClient.getClientAddress();
+       public void addClient(Integer idc,String namec,Integer card_number,String CNP,String address) {
+		
 		ClientGateway clientSQL=new ClientGateway(conn);
-		clientSQL.createClient(idc,namec,card_number,cnp,address);
+		clientSQL.createClient(idc,namec,card_number,CNP,address);
 		
 	}
 	
-	public void updateClient(Client parsedClient) {
-		Integer idc = parsedClient.getClientId();
-		String address = parsedClient.getClientAddress();
+	public void updateClient(Integer idc, String address) {
+
 		ClientGateway clientSQL=new ClientGateway(conn);
 		clientSQL.updateClient(idc, address);
 		
 	}
         
-           public ArrayList<Client> getAllClients() {
-		ArrayList<Client> returnStatement = new ArrayList<Client>();
+           public ArrayList<Object> getAllClients() {
+		ArrayList<Object> returnStatement = new ArrayList<Object>();
 		ClientGateway clientSQL=new ClientGateway(conn);
+              
 		returnStatement = clientSQL.AllClients();
 		return returnStatement;
 		
@@ -50,34 +45,26 @@ public class Operation {
            
 	
 
-        public void addAccount(Account parsedAccount) {
-		Integer ida = parsedAccount.getAccountId();
-		String typea = parsedAccount.getAccountType();
-                Double amount= parsedAccount.getAccountAmount();
-		String creat_date = parsedAccount.getAccountDate();
-                Integer ide=parsedAccount.getEmployeeId();
-                Integer idc=parsedAccount.getClientId();
+        public void addAccount(Integer ida,String typea,Double amount,String creat_date,Integer ide,Integer idc) {
+		
 		AccountGateway accountSQL=new AccountGateway(conn);
 		accountSQL.createAccount(ida,typea,amount,creat_date,ide,idc);
 		
 	}
         
         
-        public void updateAccount(Account parsedAccount)
+        public void updateAccount(Integer ida,String typea)
         {
-            Integer ida=parsedAccount.getAccountId();
-            String typea = parsedAccount.getAccountType();
+            
             AccountGateway accountSQL=new AccountGateway(conn);
         accountSQL.updateAccount(ida,typea);
             
         }
         
         
-       public void report(Account parsedAccount)
+       public void report(Integer ide,String data)
        {
            System.out.println("am ajuns in oper");
-            Integer ide=parsedAccount.getEmployeeId();
-            String data = parsedAccount.getAccountDate();
             AccountGateway accountSQL=new AccountGateway(conn);
         accountSQL.genreport(ide,data);
        }
@@ -88,23 +75,21 @@ public class Operation {
 		
 	}
     
-   public void transferintreconturi(Account a1,Account a2,Double sum)
+   public void transferintreconturi(Integer ida1,Integer ida2,Double sum)
    {
-       Integer ida1=a1.getAccountId();
-       Integer ida2=a2.getAccountId();
        AccountGateway accountSQL=new AccountGateway(conn);
        accountSQL.transfer(ida1, ida2, sum);
    }
       
-   public void procesarefacturaa(Account a,Double suma)
+   public void procesarefacturaa(Integer ida1,Double suma)
    {
-       Integer ida1=a.getAccountId();
+       
        AccountGateway accountSQL=new AccountGateway(conn);
        accountSQL.procesarefactura(ida1,suma);
    }
    
-       public ArrayList<Account> getAllAccounts() {
-		ArrayList<Account> returnStatement = new ArrayList<Account>();
+       public ArrayList<Object> getAllAccounts() {
+		ArrayList<Object> returnStatement = new ArrayList<Object>();
             AccountGateway accountSQL=new AccountGateway(conn);
 		returnStatement = accountSQL.AllAccounts();
 		return returnStatement;
@@ -114,21 +99,16 @@ public class Operation {
        
        
        
-      public void addEmployee(Employee parsedEmployee) {
-		Integer ide = parsedEmployee.getEmployeeId();
-		String namee = parsedEmployee.getEmployeeName();
-                Integer age=parsedEmployee.getEmployeeAge();
-		String empl_date = parsedEmployee.getEmployeeDate();
+      public void addEmployee(Integer ide,String namee,Integer age,String empl_date) {
+		
 		EmployeeGateway employeeSQL=new EmployeeGateway(conn);
 		employeeSQL.createEmployee(ide,namee,age,empl_date);
 		
 	}
         
         
-        public void updateEmployee(Employee parsedEmployee)
+        public void updateEmployee(Integer ide,String namee)
         {
-            Integer ide=parsedEmployee.getEmployeeId();
-		String namee = parsedEmployee.getEmployeeName();
             EmployeeGateway employeeSQL=new EmployeeGateway(conn);
         employeeSQL.updateEmployee(ide,namee);
             
@@ -141,8 +121,8 @@ public class Operation {
 	}
     
         
-          public ArrayList<Employee> getAllEmployees() {
-		ArrayList<Employee> returnStatement = new ArrayList<Employee>();
+          public ArrayList<Object> getAllEmployees() {
+		ArrayList<Object> returnStatement = new ArrayList<Object>();
 		EmployeeGateway employeeSQL=new EmployeeGateway(conn);
 		returnStatement = employeeSQL.AllEmployees();
 		return returnStatement;

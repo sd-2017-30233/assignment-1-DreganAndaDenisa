@@ -29,8 +29,14 @@ public class EmployeeGateway {
   }
 
     
-    public ArrayList<Employee> AllEmployees(){
-        ArrayList<Employee> returnStatement = new ArrayList<Employee>();
+  
+  
+  
+  public ArrayList<Object> AllEmployees(){
+
+      
+      
+		ArrayList<Object> returnStatement = new ArrayList<Object>();
 
 		try {
 
@@ -38,19 +44,16 @@ public class EmployeeGateway {
 			PreparedStatement dbStatement = conn.prepareStatement(statement);
 			ResultSet rs = dbStatement.executeQuery();
 
+                        
 			while(rs.next()) {
-				Integer ide = rs.getInt("ide");
-				String namee = rs.getString("namee");
-                                String empl_date=rs.getString("empl_date");
-                                Integer age = rs.getInt("age");
-                                Employee newEmployee=new Employee();
-                                newEmployee.setEmployeeId(ide);
-                                newEmployee.setEmployeeName(namee);
-                                newEmployee.setEmployeeDate(empl_date);
-                                newEmployee.setEmployeeAge(age);
+                            Object[] c=new Object[4];
+				c[0]=rs.getInt(1);
+                                c[1]=rs.getString(2);
+                                c[2]=rs.getString(3);
+                                c[3]=rs.getInt(4);
                                 
-                                
-				returnStatement.add(newEmployee);			
+                                returnStatement.add(c);
+                               			
 			}
 		}
 		catch(SQLException e) {
@@ -62,6 +65,13 @@ public class EmployeeGateway {
 		return returnStatement;
 		
 	}
+ 
+  
+  
+  
+  
+  
+  
    
 	public void createEmployee(Integer ide,String namee,Integer age,String empl_date) {
 

@@ -27,11 +27,11 @@ public class ClientGateway {
     this.conn = DatabaseConnectionController.getConnection();
   }
   
-  public ArrayList<Client> AllClients(){
+  public ArrayList<Object> AllClients(){
 
       
       
-		ArrayList<Client> returnStatement = new ArrayList<Client>();
+		ArrayList<Object> returnStatement = new ArrayList<Object>();
 
 		try {
 
@@ -40,18 +40,15 @@ public class ClientGateway {
 			ResultSet rs = dbStatement.executeQuery();
 
 			while(rs.next()) {
-				Integer idc = rs.getInt("idc");
-				String namec = rs.getString("namec");
-                                Integer card_number=rs.getInt("card_number");
-                                String cnp=rs.getString("cnp");
-                                 String address=rs.getString("address");
-                                 Client newClient=new Client();
-                                 newClient.setClientId(idc);
-                                 newClient.setClientName(namec);
-                                 newClient.setClientCardNr(card_number);
-                                 newClient.setClientCNP(cnp);
-                                 newClient.setClientAddress(address);
-				returnStatement.add(newClient);			
+                            Object[] c=new Object[5];
+				c[0]=rs.getInt(1);
+                                c[1]=rs.getString(2);
+                                c[2]=rs.getInt(3);
+                                c[3]=rs.getString(4);
+                                c[4]=rs.getString(5);
+                                
+                                returnStatement.add(c);
+                               			
 			}
 		}
 		catch(SQLException e) {
@@ -67,19 +64,8 @@ public class ClientGateway {
 	public void createClient(Integer idc,String namec,Integer card_number,String cnp,String address) {
 System.out.println("am ajuns in gate");
 		try{
-                    //System.out.println("am ajuns in gate in try");
-                        String statementt = "select max(idc) from client_info;";
-			PreparedStatement dbStatement = conn.prepareStatement(statementt);
-			ResultSet rs = dbStatement.executeQuery();
-  // if(rs.next()==false) {JOptionPane.showMessageDialog(null, "Nu exista activitate!", null, JOptionPane.ERROR_MESSAGE);}
-     while(rs.next()) {
-       // System.out.println("am ajuns in gate in while");
-				Integer idefromdb = rs.getInt("idc");
-                                //System.out.println(idefromdb);
-                                 Client newAccount1=new Client();
-                                newAccount1.setClientId(idefromdb);
-     
-                                if(newAccount1.getClientId()!=idc){
+                  
+                             
 			String statement = "INSERT INTO `client_info` (`idc`,`namec`,`card_number`,`cnp`,`address`) VALUES (?,?,?,?,?)";
 			PreparedStatement dbStatementt = conn.prepareStatement(statement);
                         
@@ -89,10 +75,10 @@ System.out.println("am ajuns in gate");
                         dbStatementt.setString(4,cnp);
                         dbStatementt.setString(5,address);
 			dbStatementt.executeUpdate();
-                                JOptionPane.showMessageDialog(null, "Clientul a fost adaugat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);}
-                        else{JOptionPane.showMessageDialog(null, "Id existent !", null, JOptionPane.ERROR_MESSAGE);}
-                                
-                }}
+                             //   JOptionPane.showMessageDialog(null, "Clientul a fost adaugat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
+                 
+                               
+                }
 		
 		catch(SQLException e) {
 			//System.out.println("SQLException: " + e.getMessage());

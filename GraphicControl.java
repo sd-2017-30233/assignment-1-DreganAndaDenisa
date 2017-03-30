@@ -721,13 +721,8 @@ backadmin2.addActionListener(new Control());
                                  String cnpp = cnp.getText();
                                 String addrr = addr.getText();
                                 
-				Client parsedClient= new Client();
-				parsedClient.setClientId(idcc);
-				parsedClient.setClientName(namecc);
-                                parsedClient.setClientCNP(cnpp);
-                                parsedClient.setClientCardNr(cardnrr);
-				parsedClient.setClientAddress(addrr);
-				operations.addClient(parsedClient);ok=true;
+				
+				operations.addClient(idcc,namecc,cardnrr,cnpp,addrr);ok=true;
       //if (ok){JOptionPane.showMessageDialog(null, "Clientul a fost adaugat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);}
       //else {JOptionPane.showMessageDialog(null, "Verifica datele introduse! Nu sunt corecte", null, JOptionPane.ERROR_MESSAGE);};
                           //      updateTableClient();
@@ -738,11 +733,8 @@ backadmin2.addActionListener(new Control());
 				Integer idcc = Integer.parseInt(idc.getText());
 				String addrr = addr.getText();
                                
-                                
-				Client parsedClient= new Client();
-				parsedClient.setClientId(idcc);
-				parsedClient.setClientAddress(addrr);
-				operations.updateClient(parsedClient);
+                              
+				operations.updateClient(idcc,addrr);
                                  JOptionPane.showMessageDialog(null, "Clientul a fost actualizat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
                             //    updateTableClient();
 				
@@ -758,14 +750,7 @@ backadmin2.addActionListener(new Control());
                                  Integer ideptaa = Integer.parseInt(idepta.getText());
                                 
                                 
-				Account parsedAccount= new Account();
-				parsedAccount.setAccountId(idaa);
-				parsedAccount.setAccountType(typeaa);
-                                parsedAccount.setAccountAmount(amountt);
-                                parsedAccount.setAccountDate(creatdatee);
-				parsedAccount.setClientId(idcc);
-                                parsedAccount.setEmployeeId(ideptaa);
-				operations.addAccount(parsedAccount);
+				operations.addAccount(idaa,typeaa,amountt,creatdatee,idcc,ideptaa);
                                  JOptionPane.showMessageDialog(null, "Contul a fost adaugat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
 				
 				       
@@ -775,10 +760,7 @@ backadmin2.addActionListener(new Control());
 				String typeaa = typea.getText();
                                
                                 
-				Account parsedAccount= new Account();
-				parsedAccount.setAccountId(idaa);
-				parsedAccount.setAccountType(typeaa);
-				operations.updateAccount(parsedAccount);
+				operations.updateAccount(idaa,typeaa);
                                  JOptionPane.showMessageDialog(null, "Contul a fost actualizat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
                                
 				
@@ -807,13 +789,8 @@ backadmin2.addActionListener(new Control());
                                 String empldatee = empldate.getText();
                                 
                                 
-				Employee parsedEmployee= new Employee();
-				parsedEmployee.setEmployeeId(idee);
-				parsedEmployee.setEmployeeName(nameee);
-                                parsedEmployee.setEmployeeAge(agee);
-                                parsedEmployee.setEmployeeDate(empldatee);
 				
-				operations.addEmployee(parsedEmployee);
+				operations.addEmployee(idee,nameee,agee,empldatee);
                                  JOptionPane.showMessageDialog(null, "Employee a fost adaugat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
                                 
 				
@@ -824,10 +801,7 @@ backadmin2.addActionListener(new Control());
 				String nameee = namee.getText();
                                
                                 
-				Employee parsedEmployee= new Employee();
-				parsedEmployee.setEmployeeId(idee);
-				parsedEmployee.setEmployeeName(nameee);
-				operations.updateEmployee(parsedEmployee);
+				operations.updateEmployee(idee,nameee);
                                  JOptionPane.showMessageDialog(null, "Employee a fost actualizat cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
                                
 				
@@ -848,12 +822,9 @@ backadmin2.addActionListener(new Control());
                                Integer idaa1=Integer.parseInt(ida.getText());
                                Integer idaa2=Integer.parseInt(ida1.getText());
                                Double sum=Double.parseDouble(sumatransfer.getText());
-                               Account parsedAccount1= new Account();
-			       parsedAccount1.setAccountId(idaa1);
-                                Account parsedAccount2= new Account();
-			       parsedAccount2.setAccountId(idaa2);
+                          
                                
-                               operations.transferintreconturi(parsedAccount1,parsedAccount2,sum);
+                               operations.transferintreconturi(idaa1,idaa2,sum);
     
                               
     
@@ -867,9 +838,8 @@ backadmin2.addActionListener(new Control());
                            {
                                Integer idaa=Integer.parseInt(ida.getText());
                                Double suma=Double.parseDouble(sumafactura.getText());
-                               Account parsedAccount= new Account();
-			       parsedAccount.setAccountId(idaa);
-                               operations.procesarefacturaa(parsedAccount,suma);
+                             
+                               operations.procesarefacturaa(idaa,suma);
                               
                            }
                            
@@ -877,10 +847,8 @@ backadmin2.addActionListener(new Control());
                            {
                                Integer idee=Integer.parseInt(ide.getText());
                                String data=reportdate.getText();
-                               Account parsedAccount= new Account();
-			       parsedAccount.setEmployeeId(idee);
-                               parsedAccount.setAccountDate(data);
-                               operations.report(parsedAccount);
+                              
+                               operations.report(idee,data);
                                //JOptionPane.showMessageDialog(null, "Factura platita cu succes!", null, JOptionPane.INFORMATION_MESSAGE);
                            }
 }
